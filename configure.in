@@ -1,0 +1,101 @@
+#                                               -*- Autoconf -*-
+# Process this file with autoconf to produce a configure script.
+
+AC_PREREQ(2.59)
+AC_INIT(FULL-PACKAGE-NAME, VERSION, BUG-REPORT-ADDRESS)
+AC_CONFIG_SRCDIR([validate.c])
+AC_CONFIG_HEADER([config.h])
+
+# Checks for programs.
+AC_PROG_CC
+
+# Checks for libraries.
+# FIXME: Replace `main' with a function in `-lmagic':
+
+# Checks for header files.
+AC_HEADER_DIRENT
+AC_HEADER_STDC
+AC_CHECK_HEADERS([fcntl.h stdlib.h string.h unistd.h])
+
+# Checks for typedefs, structures, and compiler characteristics.
+AC_C_CONST
+AC_HEADER_STDBOOL
+AC_TYPE_SIZE_T
+
+# Checks for library functions.
+AC_FUNC_CLOSEDIR_VOID
+AC_FUNC_MALLOC
+AC_FUNC_STRFTIME
+AC_CHECK_FUNCS([getcwd pathconf regcomp setenv strerror strstr])
+
+objects=""
+
+AC_PREFIX_DEFAULT("/usr/local")
+
+AC_ARG_WITH([magic], [AC_HELP_STRING([--without-magic], [disable libmagic for vetting filetypes])], [disable_libmagic=1], [])
+AC_ARG_WITH([zlib], [AC_HELP_STRING([--without-zlib], [disable zlib for scanning gziped files])], [disable_zlib=1], [])
+AC_ARG_WITH([bzip], [AC_HELP_STRING([--without-bzip], [disable libbz2 for scanning bzipped files])], [disable_bzip=1], [])
+AC_ARG_WITH([sqlite], [AC_HELP_STRING([--without-sqlite], [disable sqlite for databased quiet scanning])], [disable_sqlite=1], [])
+
+AC_ARG_WITH([static], [AC_HELP_STRING([--with-static], [try to compile a static executable])], [enable_static=1], [])
+
+AC_ARG_WITH([buildroot], [AC_HELP_STRING([--with-buildroot], [set buildroot for RPM builds])], [buildroot=$withval], [buildroot=])
+
+if test "$disable_libmagic" = 1 ; then
+  AC_DEFINE([DISABLE_LIBMAGIC], [1])
+else
+  AC_CHECK_LIB([magic], [magic_open], [], [AC_MSG_FAILURE([libmagic required])])
+  objects="$objects magic_test.o"
+fi
+
+if test "$disable_zlib" = 1 ; then
+  AC_DEFINE([DISABLE_ZLIB], [1])
+else
+  AC_CHECK_LIB([z], [main], [], [AC_MSG_FAILURE([libz for gzip files required])])
+fi
+
+if test "$disable_bzip" = 1 ; then
+  AC_DEFINE([DISABLE_BZIP], [1])
+else
+  AC_CHECK_LIB([bz2], [main], [], [AC_MSG_FAILURE([libbz2 for bzip files required])])
+fi
+
+if test "$disable_sqlite" = 1 ; then
+	AC_DEFINE([DISABLE_SQLITE], [1])
+else
+	objects="$objects dbase.o"
+	AC_CHECK_LIB([sqlite3], [main], [], [AC_MSG_FAILURE([sqlite3 required for databased quiet scanning])])
+	AC_CHECK_LIB([pthread], [main], [], [AC_MSG_FAILURE([pthread required for databased quiet scanning])])
+fi
+
+if test "$enable_static" = 1 ; then
+  static=" -static "
+  extraobjs=" /usr/lib/libpthread.a "
+else
+  static=""
+fi
+
+AC_SUBST([BUILDROOT], [$buildroot])
+
+AC_DEFINE_UNQUOTED([VERSION], ["`cat VERSION`"])
+AC_SUBST([STATIC], [$static])
+
+AC_SUBST([VERSION], [`cat VERSION`])
+AC_SUBST([PWD], [`pwd`])
+AC_SUBST([RELEASE], [`cat RELEASE`])
+
+objects="$objects ssniper.o list.o validate.o scan_file.o config_file.o ssn_fsm.o extension_test.o logging.o get_line.o list_test.o "
+AC_SUBST([OBJECTS], [$objects])
+AC_SUBST([EXTRAOBJS], [$extraobjs])
+
+if test "`uname -s`" = "SunOS" ; then
+  CFLAGS=" ${CFLAGS} "
+fi
+if test "`uname -s`" = "Linux" ; then
+  CFLAGS=" ${CFLAGS} -O9 -g"
+fi
+
+AC_CONFIG_FILES([Makefile])
+AC_CONFIG_FILES([ssniper.spec])
+AC_CONFIG_FILES([install.sh])
+AC_OUTPUT

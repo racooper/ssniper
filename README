@@ -1,0 +1,237 @@
+
+
+			      SSNiper
+			      README
+
+			Author:  Joshua Stone
+			Contact: joshs@uiuc.edu
+			Date:    Dec 4, 2007
+
+
+Introduction
+----------------------------------------------------------------------
+
+This program was initially designed to facilitate automated scanning
+for SSN-like strings in publically-accessible web directories.  This
+comes from a historical problem with this issue, as well as a desire
+to identify such potentially damaging exposures before they are
+discovered or reported via less desirable means.  This is not intended
+to be an extremely complex tool, but some care has been taken to
+filter results so that it is possible to reduce the number of false
+positives as much as is reasonable.
+
+The program is slightly more complex than a recursive 'grep'.  The
+details of these additional features are listed below.  Suffice it
+to say, this tool is better than running grep, though not as advanced
+as it could be.
+
+
+Acknowledgments
+----------------------------------------------------------------------
+
+Special thanks to:
+
+Mike Hallock -- Contributed patch to SSN Finite State Machine for 
+limiting false positives by ensuring both separators in a delimited 
+SSN are equal.  
+
+
+Licensing
+----------------------------------------------------------------------
+
+SSNiper is released under the University of Illinois/NCSA Open Source
+License.  This license is detailed in the file "LICENSE" in this 
+directory.  You can also see the terms of this license at the top of
+ssniper.c.
+
+This license is relatively "normal" in terms of Open Source licenses,
+and must be included with any redistribution of this software.
+
+SSNiper has been developed by the Technology Services Group in the
+Computer Science Department at the University of Illinois, Urbana-
+Champaign.  
+
+
+Features
+----------------------------------------------------------------------
+
+SSN Scanning -- SSNiper uses an optimized Finite State Machine to 
+identify both delimited and non-delimited SSNs.  By reporting these 
+separately, it can be easier to identify false positives.
+
+SSN Validation -- SSNs identified are checked for area/group code
+validity.  The allocation scheme for SSNs is such that only certain
+numeric combinations are valid.  At the time of writing, these rules
+limit valid SSNs to about 40% of the 9-digit number space.
+
+Speed -- This is much faster than other solutions.  It is even faster
+than a recursive grep, which thrills me to no end.
+
+Compressed Files -- SSNiper supports scanning through some compressed
+filetypes (notably gzip and bzip).  This support extends only to one
+level of compression.  I.e., SSNiper does not understand archive
+formats (such as tar or zip), and cannot thus uncompress compressed
+files within a zipped file.  But hey, you get what you pay for.
+
+Filetype Vetting -- using libmagic, SSNiper is able to exclude various
+time-consuming filetypes from scanning.  It is unusual to find plain-
+text SSNs in JPEG images, for example, so by previewing filetypes,
+it is possible to substantially impact scan time.
+
+File Extensions -- SSNIper will use a configurable list of file 
+extensions to skip files that "should" not have SSNs in them.
+
+
+Compiling
+----------------------------------------------------------------------
+
+This code has increased in capability, and likewise, so has build
+complexity.  I have switched to GNU autotools, so if you've got the
+right environment, you should be able to use a standard salute:
+
+$ ./configure
+..
+$ make && make install
+
+In case you're on a strange system (for now, such as Mac OS X), you
+may have to disable some of the features.  So far, the following
+modules can be disabled with parameters to configure:
+
+  --without-magic   Don't use libmagic to vet filetypes
+  --without-zlib    Don't bind to zlib for looking through gzips
+  --without-bzip    Don't bind to libbz2 for bzipped files
+  --with-static     Link executable statically (doesn't work on Macs)
+
+
+Configuring
+----------------------------------------------------------------------
+
+There is a configuration file, ssniper.conf, stored by default in 
+/usr/local/etc/ssniper.conf.  This file contains a series of
+directives, some of which are necessary.  The directives supported
+so far are:
+
+skip "<val>"     Skip files whose libmagic output (i.e. 'file' command)
+                 contains the provided string.  This is a substring
+                 match, not a full string compare.
+
+skipext "<ext>"  Skip files with the provided extension (after the last
+                 period in the filename).
+
+bytecap "<n>"    This number will be used to limit the amount of each
+                 file that will be scanned.  E.g., you can limit the
+                 scan to the first 5MB of each file.
+
+magic "<path>"   A path to the libmagic database (required if you have
+                 compiled in linking to libmagic).  This will be used
+                 to determine file types as SSNiper traverses the
+                 filesystem.
+
+codes "<path>"   This is a path to a file containing a list of SSN area
+                 and group codes.  Each allocated area code (first 3
+                 digits of the SSN) only has certain valid group codes 
+                 (the 4th and 5th digit).  This file should contain a
+                 series of lines, each containing two numbers -- the
+                 area code and its maximum group code.
+
+
+Running
+----------------------------------------------------------------------
+
+Usage statement: 
+
+ssniper 0.9.2 -- SSN scanner -- by Joshua Stone (joshs@uiuc.edu)
+-----------------------------------------------------------------
+
+ usage: ssniper -[hmnclzb] <dir> [<dir>*]
+
+    <dir>         Directory to scan
+    -h            This help output
+    -m <magic>    Override location of magic file
+    -n <name>     Name prefix on output files*
+    -c <conf>     Configuration file (default ./ssniper.conf)
+    -l <bytes>    Limit file scanning cap to first <bytes> bytes
+    -z            Skip gzip files (if compiled in)
+    -b            Skip bzip files (if compiled in)
+
+An example session looks like this (apologies for long lines):
+
+$ ./ssniper /path/to/ssn-test
+
+ssniper 0.9.2 -- SSN scanner -- by Joshua Stone (joshs@uiuc.edu)
+-----------------------------------------------------------------
+Opening ssniper_results.log for scan results
+Opening ssniper_info.log for scan progress / info
+Opening ssniper_debug.log for debug info / errors
+Loading config file from /usr/local/etc/ssniper.conf
+Reading SSN max group codes from /usr/local/etc/ssn_codes.txt
+Setting file read byte cap to 50003968
+
+Scan Progress:
+-------------
+2007-11-12 14:15:30 Starting scan
+2007-11-12 14:15:30 Scanning basedir /path/to/ssn-test
+2007-11-12 14:15:31 Scan Completed
+
+Summary Stats / Aggregate Scan Results:
+---------------------------------------
+Found 29 files and 0 subdirectories
+Skipped 7 files
+Scanned 22 files
+Identified 12 files with possible delimited SSNs
+Identified 4 files with possible non-delimited SSNs
+Identified 3 files with false positives
+Processed 6361786 total bytes
+
+
+Report Review
+----------------------------------------------------------------------
+
+Reports are output to the file "ssniper_results.log", (or another
+prefix, if you have specified the '-n' flag).  This file is a little
+dense, 
+
+I have provided a followup Perl script that will take this file and 
+condense it to a more human-readable report. This can be done as 
+follows:
+
+  $ cat ssniper_results.log | ssniper-report.pl > report_file.txt
+
+The resulting report will categorize the results so that they will be 
+easier to review by hand.  High Risk hits should typically be
+investigated.  Low Risk hits can probably be vetted by a cursory
+review of the filenames in the report.
+
+Note that one of the goals of SSNiper is not to throw away useful
+data.  As such, there will be many false positives -- but hopefully
+this report-generation process can help some.  Other suggestions are
+welcome at joshs@uiuc.edu.
+
+
+Known Issues
+----------------------------------------------------------------------
+
+/proc and /dev will be skipped by default.  However, SSNiper will
+still scan them if you tell it to explicitly.  There are some files in
+these directories that will cause problems (like, do you really want
+to scan /proc/dma for SSNs?).  I have experienced some blocks on read
+in some of the special files in here, so beware.  If you really want
+to scan /proc, do this:
+
+  $ ssniper /proc
+
+This will result in not skipping the proc directory, since it will
+effectively be the root directory as far as SSNiper is concerned.
+
+The magic file is hard coded -- you can change this in magic_test.c. 
+In the near future, this will become much more configurable.
+
+The total bytes scanned value will overflow currently after scanning
+16 exabytes of data.  This is because it's stored as a 64-bit long
+long.  
+
+There seem to be some dragons when scanning relative paths.  Worst
+case, use absolute paths on the command line.
+
+:w
+

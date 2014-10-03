@@ -1,0 +1,316 @@
+Thu Dec  3 14:08:17 CST 2009  joshs@uiuc.edu
+  * Fixed interactive database review numbering
+
+Thu Dec  3 13:36:44 CST 2009  joshs@uiuc.edu
+  * 0.9.7-2 version (fixed ssniper-report.pl)
+
+Thu Dec  3 13:03:55 CST 2009  joshs@uiuc.edu
+  * fixed ssniper-report.pl "()" in filenames
+
+Wed May 13 14:09:29 CDT 2009  joshs@uiuc.edu
+  * added db-recording functionality, and improved Make process
+
+Fri Mar  7 14:29:28 CST 2008  joshs@uiuc.edu
+  * fixed output bug with timestamps (%d instead of %e in strftime)
+
+Fri Mar  7 14:21:57 CST 2008  joshs@uiuc.edu
+  * Fixed conflict between command line args and configured roots
+
+Fri Mar  7 14:08:15 CST 2008  joshs@uiuc.edu
+  * fixed ssniper.conf file for databased scanning mode
+
+Fri Mar  7 13:55:24 CST 2008  joshs@uiuc.edu
+  * added email notification and better db tracking
+
+Wed Mar  5 17:24:11 CST 2008  joshs@uiuc.edu
+  * added quiet database-based scanning (sqlite)
+
+Wed Mar  5 11:01:59 CST 2008  joshs@uiuc.edu
+  * added 'root' directive in config file; fixed base_filename bug
+
+Thu Jan 10 14:11:29 CST 2008  joshs@uiuc.edu
+  tagged 0.9.5
+
+Thu Jan 10 14:00:28 CST 2008  joshs@uiuc.edu
+  * fixed validation bug
+
+Tue Dec  4 16:47:25 CST 2007  joshs@uiuc.edu
+  * Updated README
+
+Tue Dec  4 16:45:53 CST 2007  joshs@uiuc.edu
+  tagged 0.9.4-4
+
+Tue Dec  4 16:44:05 CST 2007  joshs@uiuc.edu
+  * incorporated patch submitted by Mike Hallock improving SSN FSM (eliminates more false positives)
+  
+  Thanks to Mike -- the SSN FSM formerly would ensure that two separators
+  were present for delimited SSNs, but would not ensure that the separators
+  were identical.  Mike added tracking and checking for equality here.
+  
+
+Thu Nov 29 15:56:20 CST 2007  joshs@uiuc.edu
+  UNDO: added warning about using ssniper-report.pl at end of scan
+
+Thu Nov 29 15:56:20 CST 2007  joshs@uiuc.edu
+  * added warning about using ssniper-report.pl at end of scan
+
+Wed Nov 28 14:32:14 CST 2007  joshs@uiuc.edu
+  tagged 0.9.4-2
+
+Wed Nov 28 14:28:12 CST 2007  joshs@uiuc.edu
+  * generate install script from configure
+
+Wed Nov 28 14:24:05 CST 2007  joshs@uiuc.edu
+  UNDO: generate install script from configure
+
+Wed Nov 28 14:24:05 CST 2007  joshs@uiuc.edu
+  * generate install script from configure
+
+Wed Nov 28 14:19:05 CST 2007  joshs@uiuc.edu
+  * fixed install script for binary distro on Solaris
+
+Wed Nov 28 14:14:46 CST 2007  joshs@uiuc.edu
+  * fixed timestamping on Solaris (%Y-%m-%e instead of %F in strftime)
+
+Wed Nov 28 13:59:09 CST 2007  joshs@uiuc.edu
+  * fixed compile problems on Solaris
+
+Tue Nov 27 16:38:48 CST 2007  joshs@uiuc.edu
+  * added Splitter.hs for splitting results into groups
+
+Tue Nov 20 10:34:37 CST 2007  joshs@uiuc.edu
+  tagged 0.9.4
+
+Tue Nov 20 10:33:49 CST 2007  joshs@uiuc.edu
+  * added error checking for skip list ;-)
+
+Tue Nov 20 10:01:45 CST 2007  joshs@uiuc.edu
+  * added skip list options
+
+Tue Nov 20 09:32:19 CST 2007  joshs@uiuc.edu
+  * added skip list options
+
+Fri Nov 16 11:01:33 CST 2007  joshs@uiuc.edu
+  * fixed error checking on bad blocks -- added debug output
+
+Wed Nov 14 15:29:21 CST 2007  joshs@uiuc.edu
+  * added default fallbacks for config file locations; moved binary distribution to /usr/local
+
+Wed Nov 14 14:58:21 CST 2007  joshs@uiuc.edu
+  * added error checking on opening files
+
+Tue Nov 13 09:45:01 CST 2007  joshs@uiuc.edu
+  * added release designators to binary and source distributions
+
+Mon Nov 12 16:56:25 CST 2007  joshs@uiuc.edu
+  * fixed licenses; changes to build process; fixed relative path bug
+
+Mon Nov 12 14:40:47 CST 2007  joshs@uiuc.edu
+  * added LICENSE file
+
+Mon Nov 12 14:37:29 CST 2007  joshs@uiuc.edu
+  * updated binary distribution install process
+
+Mon Nov 12 14:32:40 CST 2007  joshs@uiuc.edu
+  tagged 0.9.3
+
+Mon Nov 12 14:32:29 CST 2007  joshs@uiuc.edu
+  * updated to 0.9.3
+
+Mon Nov 12 14:27:51 CST 2007  joshs@uiuc.edu
+  * updated README file and added LICENSE and license references
+
+Mon Nov 12 14:02:43 CST 2007  joshs@uiuc.edu
+  * added SSN max group codes from file instead of hard coded
+
+Mon Nov 12 11:51:03 CST 2007  joshs@uiuc.edu
+  * switched to reading SSN max group codes from file
+
+Fri Nov  9 16:45:18 CST 2007  joshs@uiuc.edu
+  * fixed overflow problem with byte_tracker 
+
+Fri Nov  9 15:41:47 CST 2007  joshs@uiuc.edu
+  * added RPM Makefile target (to build RPMs in user space)
+
+Fri Nov  9 13:56:34 CST 2007  joshs@uiuc.edu
+  * fixed multiple target bug
+
+Fri Nov  9 11:59:19 CST 2007  joshs@uiuc.edu
+  tagged 0.9.2
+
+Fri Nov  9 11:47:55 CST 2007  joshs@uiuc.edu
+  * changed binball build process
+
+Fri Nov  9 11:46:19 CST 2007  joshs@uiuc.edu
+  * fixed result summary bug
+
+Fri Nov  9 11:39:02 CST 2007  joshs@uiuc.edu
+  * fixed usage statement
+
+Fri Nov  9 11:08:47 CST 2007  joshs@uiuc.edu
+  * added generation of binary distribution tarballs
+
+Fri Nov  9 10:57:47 CST 2007  joshs@uiuc.edu
+  * changed make install target; moved some code around for cleanliness
+
+Fri Nov  9 10:15:25 CST 2007  joshs@uiuc.edu
+  * added realtime progress reporting; added support for multiple directory arguments
+
+Thu Nov  8 16:47:37 CST 2007  joshs@uiuc.edu
+  * switched from stat to lstat to detect symlinked directories
+
+Thu Nov  8 16:22:54 CST 2007  joshs@uiuc.edu
+  * fixed string comparison bug in extension matching component
+
+Thu Nov  8 15:21:24 CST 2007  joshs@uiuc.edu
+  * added ssniper-report.pl report generator
+
+Thu Nov  8 15:20:18 CST 2007  joshs@uiuc.edu
+  * changed version handling in build process
+
+Thu Nov  8 15:01:02 CST 2007  joshs@uiuc.edu
+  * added make install target
+
+Thu Nov  8 12:11:54 CST 2007  joshs@uiuc.edu
+  * better handling of byte counting; added file byte limit
+
+Wed Nov  7 20:26:05 CST 2007  joshs@uiuc.edu
+  * error with byte totaling (overflowing ints!)
+
+Wed Nov  7 17:17:58 CST 2007  joshs@uiuc.edu
+  * reporting of total byte throughput and flushing of results stream
+
+Wed Nov  7 17:03:29 CST 2007  joshs@uiuc.edu
+  * added support for disabling zipped file searching; 
+
+Wed Nov  7 16:47:51 CST 2007  joshs@uiuc.edu
+  * added command line options with optarg
+
+Wed Nov  7 13:19:38 CST 2007  joshs@uiuc.edu
+  * 0.9.1
+
+Wed Nov  7 12:47:08 CST 2007  joshs@uiuc.edu
+  tagged 0.9
+
+Wed Nov  7 12:35:40 CST 2007  joshs@uiuc.edu
+  * code cleanup; refactoring; fixed output bug (result)
+
+Wed Nov  7 11:10:34 CST 2007  joshs@uiuc.edu
+  * fixed compile warning on Mac OS X with missing headers from logging.h
+
+Wed Nov  7 11:05:24 CST 2007  joshs@uiuc.edu
+  * added logging.c and logging.h
+
+Wed Nov  7 11:02:07 CST 2007  joshs@uiuc.edu
+  * added better logging; split output into multiple files; added summary stats
+
+Tue Nov  6 14:21:28 CST 2007  joshs@uiuc.edu
+  * fixed bug in SSN string conversion (null termination)
+
+Tue Nov  6 13:28:26 CST 2007  joshs@uiuc.edu
+  * flush stdout when printing output to avoid loss of data
+
+Tue Nov  6 13:27:07 CST 2007  joshs@uiuc.edu
+  * added extension skip list (skipext directive in config file)
+
+Tue Nov  6 12:36:18 CST 2007  joshs@uiuc.edu
+  * tidied up code / comments
+
+Tue Nov  6 12:27:04 CST 2007  joshs@uiuc.edu
+  * added some more magic skip entries
+
+Tue Nov  6 11:55:13 CST 2007  joshs@uiuc.edu
+  * fixed magic skip list (strings were freed too early); changed definition of non-digit (fixed A111223333B, e.g.)
+
+Tue Nov  6 11:13:00 CST 2007  joshs@uiuc.edu
+  * fixed missing header file errors on compile
+
+Tue Nov  6 11:11:08 CST 2007  joshs@uiuc.edu
+  * added ssn_fsm.[ch] to repository
+
+Tue Nov  6 11:09:25 CST 2007  joshs@uiuc.edu
+  * major overhaul -- switched from regex to custom FSM
+
+Mon Nov  5 15:55:36 CST 2007  joshs@uiuc.edu
+  * added documentary comments in config_file.c
+
+Mon Nov  5 15:52:21 CST 2007  joshs@uiuc.edu
+  * source skips and magic path from config file
+
+Sat Nov  3 14:36:55 CDT 2007  joshs@uiuc.edu
+  * added versioning; tarball production final
+
+Sat Nov  3 14:19:22 CDT 2007  joshs@uiuc.edu
+  * fixes for compile on solaris; autodetect word boundary support
+
+Sat Nov  3 13:35:09 CDT 2007  joshs@uiuc.edu
+  * switched to stat for mode (more portable)
+
+Sat Nov  3 03:58:23 CDT 2007  joshs@uiuc.edu
+  * updated README
+
+Sat Nov  3 03:06:56 CDT 2007  joshs@uiuc.edu
+  * added more configure options (disable [gb]zip)
+
+Sat Nov  3 02:52:40 CDT 2007  joshs@uiuc.edu
+  * corrected autoconf issues (missing *.in files)
+
+Sat Nov  3 02:47:40 CDT 2007  joshs@uiuc.edu
+  * converted to autoconf, added feature for disabling libmagic
+
+Fri Nov  2 18:26:43 CDT 2007  joshs@uiuc.edu
+  * Added includes for compatibility with more distributions
+
+Fri Nov  2 16:59:51 CDT 2007  joshs@uiuc.edu
+  * code cleanup, broke out some BZIP-specific code
+
+Fri Nov  2 16:35:51 CDT 2007  joshs@uiuc.edu
+  * added Makefile
+
+Fri Nov  2 16:32:55 CDT 2007  joshs@uiuc.edu
+  * added constants for filetype abstraction
+
+Fri Nov  2 16:30:12 CDT 2007  joshs@uiuc.edu
+  * added support for bzip files
+
+Fri Nov  2 16:18:42 CDT 2007  joshs@uiuc.edu
+  * functionally abstracted scan_file function so we can easily add new types
+
+Fri Nov  2 15:59:20 CDT 2007  joshs@uiuc.edu
+  * oops... added scan_file.[ch] to repository
+
+Fri Nov  2 15:58:27 CDT 2007  joshs@uiuc.edu
+  * changed name, create scan_files.[ch], and added support for GZIP files
+
+Wed Oct 31 16:59:06 CDT 2007  joshs@uiuc.edu
+  * added todo list
+
+Wed Oct 31 16:58:43 CDT 2007  joshs@uiuc.edu
+  * stubbed gzip handling; altered magic handling so ssn-web can get file types
+
+Wed Oct 31 13:42:43 CDT 2007  joshs@uiuc.edu
+  * added magic number checking and the skip list
+
+Wed Oct 31 09:50:29 CDT 2007  joshs@uiuc.edu
+  * added file totaling and scan time reporting
+
+Tue Oct 30 15:41:52 CDT 2007  joshs@uiuc.edu
+  * refactoring of large functions and adding documentation comments
+
+Thu Oct 18 17:12:43 CDT 2007  joshs@uiuc.edu
+  * add readme file
+
+Thu Oct 18 16:59:53 CDT 2007  joshs@uiuc.edu
+  * commented out extraneous output
+
+Thu Oct 18 12:25:05 CDT 2007  joshs@uiuc.edu
+  * fixed segfault when directory not accessible
+
+Thu Oct 18 12:06:40 CDT 2007  joshs@uiuc.edu
+  * print when directories are skipped
+
+Thu Oct 18 12:05:50 CDT 2007  joshs@uiuc.edu
+  * skip files in /sys
+
+Thu Oct 18 12:03:58 CDT 2007  joshs@uiuc.edu
+  * initial release

@@ -1,0 +1,73 @@
+# This is a sample config file
+#
+# Contact the maintainer (currently joshs@uiuc.edu) for help with 
+# this file.
+# 
+# These are strings to match against the libmagic representation of a
+# file's type.  This will be checked as a substring, so "ELF" will
+# match "ELF 32-bit LSB executable..."
+#
+
+skip "a.out"
+skip "ELF"
+skip "gzip"
+skip "bzip"
+skip "JPEG"
+skip "PNG"
+skip "BMP"
+skip "ISO 9660"
+skip "MPEG"
+skip "binary"
+skip "program"
+skip "script"
+skip "TrueType"
+skip "compiled"
+skip "symbolic link"
+skip "RPM"
+
+# These file extensions will be skipped.  The matching is a string
+# comparison on everything after the ".", so "foo.bmp" should be
+# matched by "bmp".
+
+skipext "zip"
+skipext "svg"
+skipext "nasl"
+skipext "vmdk"
+skipext "ppd"
+skipext "xcf"
+skipext "dll"
+skipext "svn-base"
+skipext "o"
+skipext "c"
+skipext "f"
+skipext "dmg"
+skipext "ll"
+skipext "out"
+skipext "in"
+skipext "img"
+skipext "c,v"
+skipext "a"
+skipext "so"
+skipext "dylib"
+
+# This sets a byte limit for reading files up to ~50MB.  This is just
+# an optimization to waste as little time as possible on big files.
+# A multiple of the block size (32,768 by default) makes it an even 
+# number of blocks.
+
+bytecap "50003968"
+
+# This seems like a normal place for the magic database, but if yours
+# is somewhere else, feel free to change it.
+
+magic "/usr/share/file/magic"
+
+codes "SSN_CODES_TXT_PATH"
+
+# If you want to regularly scan a file tree in DB mode:
+#
+# root "/var/www/html"
+
+# If you want your DB scans to notify someone by email:
+#
+# email "someone@something.com"

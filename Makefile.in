@@ -1,0 +1,107 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+sysconfdir=@sysconfdir@
+sbindir=@sbindir@
+version=@VERSION@
+codefile=${sysconfdir}/ssn_codes.txt
+BUILDROOT=@BUILDROOT@
+
+USERDEFS= -DSSNIPER_CONF=\"${sysconfdir}/ssniper.conf\" -DSSN_CODE_FILE=\"${sysconfdir}/ssn_codes.txt\"
+
+CC= @CC@
+CFLAGS= @CFLAGS@ @DEFS@ ${USERDEFS}
+OBJECTS= @OBJECTS@
+EXTRAOBJS= @EXTRAOBJS@
+PROGNAME= ssniper 
+CFILES=validate.c list.c ssniper.c magic_test.c scan_file.c config_file.c ssn_fsm.c extension_test.c logging.c list_test.c get_line.c dbase.c
+HFILES=validate.h list.h ssniper.h magic_test.h scan_file.h config_file.h ssn_fsm.h extension_test.h logging.h list_test.h get_line.h dbase.h
+LDFLAGS= @LDFLAGS@ @STATIC@
+LIBS= @LIBS@
+
+default: ${OBJECTS}
+	${CC} ${CFLAGS} ${LDFLAGS} -o ${PROGNAME} ${OBJECTS} ${LIBS} ${EXTRAOBJS}
+	cp ssniper.conf.in ssniper.conf
+	perl -p -i -e "s,SSN_CODES_TXT_PATH,${codefile},;" ssniper.conf
+
+dbase.o: dbase.c dbase.h
+	${CC} ${CFLAGS} -c -o dbase.o -c dbase.c
+
+get_line.o: get_line.c get_line.h
+	${CC} ${CFLAGS} -c -o get_line.o -c get_line.c
+
+list_test.o: list_test.c list_test.h
+	${CC} ${CFLAGS} -c -o list_test.o -c list_test.c
+
+scan_file.o: scan_file.c scan_file.h
+	${CC} ${CFLAGS} -c -o scan_file.o -c scan_file.c
+
+validate.o: validate.c validate.h
+	${CC} ${CFLAGS} -c -o validate.o -c validate.c
+
+list.o: list.c list.h
+	${CC} ${CFLAGS} -c -o list.o -c list.c
+
+ssniper.o: ssniper.c ssniper.h
+	${CC} ${CFLAGS} -c -o ssniper.o ssniper.c
+
+magic_test.o: magic_test.c magic_test.h
+	${CC} ${CFLAGS} -c -o magic_test.o magic_test.c
+
+config_file.o: config_file.c config_file.h
+	${CC} ${CFLAGS} -c -o config_file.o config_file.c
+
+extension_test.o: extension_test.c extension_test.h
+	${CC} ${CFLAGS} -c -o extension_test.o extension_test.c
+
+logging.o: logging.c logging.h
+	${CC} ${CFLAGS} -c -o logging.o logging.c
+
+ssn_fsm.o: ssn_fsm.c ssn_fsm.h
+	${CC} ${CFLAGS} -c -o ssn_fsm.o ssn_fsm.c
+
+rpm: tarball
+	mkdir -p rpmbuild
+	mkdir -p rpmbuild/SPECS
+	mkdir -p rpmbuild/SOURCES
+	mkdir -p rpmbuild/RPMS
+	mkdir -p rpmbuild/BUILD
+	mkdir -p rpmbuild/SRPMS
+	tar xzvf ssniper-`cat VERSION`-`cat RELEASE`.tar.gz
+	mv ssniper-`cat VERSION`-`cat RELEASE` ssniper-`cat VERSION`
+	tar czvf ssniper-`cat VERSION`-`cat RELEASE`.tar.gz ssniper-`cat VERSION`
+	rm -rf ssniper-`cat VERSION`
+	cp ssniper.spec rpmbuild/SPECS/ssniper-`cat VERSION`-`cat RELEASE`.spec
+	cp ssniper-`cat VERSION`-`cat RELEASE`.tar.gz rpmbuild/SOURCES
+	cp ssniper.spec rpmbuild/SPECS/ssniper-`cat VERSION`-`cat RELEASE`.spec
+	cp ssniper-`cat VERSION`-`cat RELEASE`.tar.gz rpmbuild/SOURCES
+	DIR=`pwd`
+	rpmbuild -ba rpmbuild/SPECS/ssniper-`cat VERSION`-`cat RELEASE`.spec
+	cp rpmbuild/RPMS/i386/ssniper-`cat VERSION`-`cat RELEASE`.i386.rpm .
+
+clean: 
+	rm -f ${OBJECTS} ssniper
+
+install: ssniper
+	install -D -m 755 ssniper ${BUILDROOT}/${sbindir}/ssniper
+	install -D -m 644 ssniper.conf ${BUILDROOT}/${sysconfdir}/ssniper.conf
+	install -D -m 755 ssniper-report.pl ${BUILDROOT}/${sbindir}/ssniper-report.pl
+	install -D -m 644 ssn_codes.txt ${BUILDROOT}/${sysconfdir}/ssn_codes.txt
+
+binball: clean
+	./configure --prefix=/usr/local --sysconfdir=/usr/local/etc --with-static
+	make
+	mkdir ssniper-`cat VERSION`-`cat RELEASE`
+	cp LICENSE ssn_codes.txt install.sh uninstall.sh ssniper ssniper-report.pl README ssniper.conf ssniper-`cat VERSION`-`cat RELEASE`
+	tar czvf ssniper-`cat VERSION`-`cat RELEASE`.i386.linux.bin.tar.gz ssniper-`cat VERSION`-`cat RELEASE`
+	\rm -rf ssniper-`cat VERSION`-`cat RELEASE`
+
+tarball: clean
+	darcs get . ssniper-`cat VERSION`-`cat RELEASE`
+	\rm -rf ssniper-`cat VERSION`-`cat RELEASE`/_darcs
+	chmod +x ssniper-`cat VERSION`-`cat RELEASE`/configure
+	darcs changes > ssniper-`cat VERSION`-`cat RELEASE`/CHANGELOG
+	tar czvf ssniper-`cat VERSION`-`cat RELEASE`.tar.gz ssniper-`cat VERSION`-`cat RELEASE`
+	\rm -rf ssniper-`cat VERSION`-`cat RELEASE`
+
+loc:
+	wc -l ${CFILES} ${HFILES}

@@ -1,0 +1,23 @@
+#!/bin/sh
+
+prefix=@prefix@
+confidr=@sysconfdir@
+
+echo "Installing files..."
+cp ssniper ${prefix}/sbin
+cp ssniper-report.pl ${prefix}/sbin
+chmod 755 ${prefix}/sbin/ssniper ${prefix}/ssniper-report.pl
+
+mkdir p ${confdir}
+cp ssniper.conf ${confdir}
+cp ssn_codes.txt ${confdir}
+chmod 644 ${confdir}/ssniper.conf ${confdir}/ssn_codes.txt
+
+echo 
+echo "Don't forget to set up your configuration.  There is a config file at:"
+echo 
+echo "${confdir}/ssniper.conf"
+echo
+echo "Of particular interest, you will need to set the location of your magic"
+echo "file (on Red Hat-derived systems, this is in /usr/share/file/magic)"
+echo

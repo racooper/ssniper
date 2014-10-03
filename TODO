@@ -1,0 +1,17 @@
+Yet to do:
+
++ centralize config vars in a global struct
++ add logic to avoid network-mounted volumes
++ try to do UNICODE text?
+
+Done from TODO list:
+
++ Handle [gb]zipped files
++ Switch to autotools for building
++ figure out distinguishing files from dirs on Solaris (can't use dirent alone!)
++ add more sane selection of path to magic file (not hard coded!)
++ add config file for regexps and paths
++ add multiple output files for more useful auditing / debugging
++ add file extension skip list
++ add more report output (banner, more aggregate stats)
++ add command line argument handling (magic file, feature enable, debug output)

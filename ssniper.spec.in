@@ -1,0 +1,29 @@
+Summary: SSNiper SSN scanner
+Name: ssniper
+Version: @VERSION@
+Release: @RELEASE@
+License: U of I OSL
+Group: Development/Tools
+Source: ssniper-@VERSION@-@RELEASE@.tar.gz
+Requires: file mailx
+Buildroot: %{_tmppath}/%{name}-%{version}-root
+%define _topdir @PWD@/rpmbuild
+%description
+SSNiper is designed to scan filesystem hierarchies for files that may plausibly contain 
+SSNs.  This is to aid in efforts to clean up SSN infestations to mitigate risk of 
+exposure.
+%prep
+%setup
+./configure --with-static --with-buildroot=%{buildroot} --prefix=/usr --sysconfdir=/etc/ssniper
+%build
+make
+%install
+make install
+%clean
+make clean
+%files
+%attr(-,root,root) /usr/sbin/ssniper
+%attr(-,root,root) /usr/sbin/ssniper-report.pl
+%attr(-,root,root) /etc/ssniper/ssniper.conf
+%attr(-,root,root) /etc/ssniper/ssn_codes.txt
+%changelog
